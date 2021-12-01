@@ -1,0 +1,12 @@
+
+Bootstrap: docker
+From: satijalab/seurat:4.0.1
+IncludeCmd: yes
+
+%post
+  export OPT_DAT=/opt/azimuth
+  mkdir ${OPT_DAT}
+  cd ${OPT_DAT}
+  wget https://zenodo.org/record/4546839/files/idx.annoy
+  wget https://zenodo.org/record/4546839/files/ref.Rds
+  
