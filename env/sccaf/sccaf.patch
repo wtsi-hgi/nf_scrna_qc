@@ -1,0 +1,29 @@
+diff -Naur sccaf/cli/sccaf sccaf_fixed/cli/sccaf
+--- sccaf/cli/sccaf	2021-03-30 10:28:06.128890000 +0100
++++ sccaf_fixed/cli/sccaf	2021-03-09 23:03:02.055671000 +0000
+@@ -110,7 +110,7 @@
+
+
+ if args.optimise:
+-    if args.resolution:
++    if args.slot_for_existing_clustering is None and args.external_clustering_tsv is None:
+         sc.tl.louvain(ad, resolution=args.resolution, key_added='{}_Round0'.format(args.prefix))
+         logging.info("Run louvain for starting point: DONE")
+     else:
+@@ -153,4 +153,3 @@
+         backend.close()
+
+     logging.info("Write output: DONE")
+-
+diff -Naur sccaf/setup.py sccaf_fixed/setup.py
+--- sccaf/setup.py	2021-03-30 10:28:06.187893000 +0100
++++ sccaf_fixed/setup.py	2021-03-30 10:23:39.612995000 +0100
+@@ -20,7 +20,7 @@
+             'louvain',
+             'scikit-learn',
+             'psutil',
+-            'scanpy==1.4.6'],
++            'scanpy>=1.4.6'],
+         scripts=['cli/sccaf', 'cli/sccaf-assess', 'cli/sccaf-assess-merger', 'cli/sccaf-regress-out'],
+         author='Chichau Miau',
+         author_email='zmiao@ebi.ac.uk',

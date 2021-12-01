@@ -1,0 +1,27 @@
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - debugpy>=1.2.1
+  - numba<0.53.0
+  - pyyaml>=5.3.1
+  - pandas>=1.2.3
+  - scipy>=1.6.2
+  - numpy>=1.20.2
+  - leidenalg>=0.8.3
+  - louvain>=0.7.0
+  - plotnine>=0.8.0
+  - harmonypy>=0.0.5
+  - scrublet>=0.2.3
+  - bbknn>=1.4.1
+  - kneed>=0.7.0
+  - keras-gpu>=2.4.3
+  - tensorflow-gpu>=2.4.1
+  - scikit-learn>=0.24
+  - joblib>=1.0.1
+
+  - pip
+  - pip:
+    - cellex>=1.2.1
+    - scanpy==1.7.0rc1
