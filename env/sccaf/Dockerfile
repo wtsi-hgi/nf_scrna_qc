@@ -4,7 +4,7 @@ FROM rocker/r-ver:4.0.3
 ############################ Setup: OS #########################################
 # Set up locales properly
 RUN apt-get update && \
-    apt-get install --yes --no-install-recommends locales && \
+    apt-get install --yes --no-install-recommends locales python3.8-venv && \
     apt-get purge && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
