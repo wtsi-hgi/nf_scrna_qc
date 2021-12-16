@@ -112,12 +112,25 @@ COPY environment.yml ${HOME}/tmp/environment.yml
 # NOTE: conda clean -atipy
 #   removes everything w/o confirmation (leaves all environments functional).
 
-RUN conda config --set always_yes yes --set changeps1 no && \
-    conda update conda --yes && \
-    conda env update -v -n root --file ${HOME}/tmp/environment.yml && \
-    conda list --name root && \
-    conda clean -atipy && \
-    rm ${HOME}/tmp/environment.yml
+RUN conda config --set always_yes yes --set changeps1 no
+# update conda:
+RUN conda update -n base -c defaults conda
+# use mamba solver to install packages
+RUN conda install mamba -n base -c conda-forge
+RUN mamba env create --prefix ${HOME}/conda/envs/cenv -f ${HOME}/tmp/environment.yml
+RUN rm ${HOME}/tmp/environment.yml
+# Set installed Conda env as default:
+ENV CONDA_DEFAULT_ENV cenv
+ENV PATH ${HOME}/conda/envs/cenv/bin:$PATH
+RUN echo $PATH
+RUN ls -ltra ${HOME}/conda/envs/cenv/bin
+
+# clean-up  # USER root
+RUN conda clean -atipy
+RUN rm -rf /tmp/*
+
+
+
 RUN python -V
 # export the conda path to force container_env since .bashrc necessarily
 # sourced when when the image is used
