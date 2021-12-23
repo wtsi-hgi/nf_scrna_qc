@@ -59,14 +59,6 @@ RUN mkdir ${HOME}/tmp && \
 ENV PATH ${HOME}/bin:$PATH
 ################################################################################
 
-
-
-############################ Setup: R packages #################################
-USER root
-WORKDIR ${HOME}/tmp
-COPY Rpackages.R ${HOME}/tmp/Rpackages.R
-RUN Rscript ${HOME}/tmp/Rpackages.R
-
 ############################ Setup: conda ######################################
 # install conda
 USER root
@@ -77,46 +69,18 @@ RUN echo "export PATH=${HOME}/conda/bin:$PATH" > /etc/profile.d/conda.sh && \
     /bin/bash /tmp/miniconda.sh -b -p ${HOME}/conda && \
     rm /tmp/miniconda.sh && \
     ${HOME}/conda/bin/conda clean -atipy
-
 ENV PATH ${HOME}/conda/bin:$PATH
 
-
-# alternative conda install (instead of the manual install from above)
-# FROM continuumio/miniconda3:latest
-################################################################################
-
-
-############################ Setup: non-conda tools ############################
-# download things to tmp
-WORKDIR ${HOME}/tmp
-
-# Example: install GCTA
-#RUN wget --quiet \
-#    https://cnsgenomics.com/software/gcta/gcta_1.92.1beta5.zip && \
-#    unzip gcta_1.92.1beta5.zip && \
-#    chmod 755 gcta_1.92.1beta5/gcta64 && \
-#    mv gcta_1.92.1beta5/gcta64 /bin/gcta64 && \
-#    rm gcta_1.92.1beta5.zip && \
-#    rm -r gcta_1.92.1beta5
-################################################################################
-
-############################ Setup: conda environment ##########################
 # make sure conda files are owned by user
 RUN chown -R ${NB_USER}:${NB_USER} ${HOME}
-USER ${NB_USER}
 
-# download the conda environment OR copy from local directory
-COPY environment.yml ${HOME}/tmp/environment.yml
-
-# install conda environment
-# NOTE: conda clean -atipy
-#   removes everything w/o confirmation (leaves all environments functional).
-
+# USER ${NB_USER}
 RUN conda config --set always_yes yes --set changeps1 no
 # update conda:
 RUN conda update -n base -c defaults conda
 # use mamba solver to install packages
 RUN conda install mamba -n base -c conda-forge
+COPY environment.yml ${HOME}/tmp/environment.yml
 RUN mamba env create --prefix ${HOME}/conda/envs/cenv -f ${HOME}/tmp/environment.yml
 RUN rm ${HOME}/tmp/environment.yml
 # Set installed Conda env as default:
@@ -129,6 +93,15 @@ RUN ls -ltra ${HOME}/conda/envs/cenv/bin
 RUN conda clean -atipy
 RUN rm -rf /tmp/*
 
+
+
+############################ Setup: R packages #################################
+USER root
+WORKDIR ${HOME}/tmp
+COPY Rpackages.R ${HOME}/tmp/Rpackages.R
+RUN Rscript ${HOME}/tmp/Rpackages.R
+
+WORKDIR ${HOME}/tmp
 
 
 RUN python -V
