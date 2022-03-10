@@ -623,7 +623,18 @@ def scanpy_merge(
         ]
 
         for col in metadata_smpl.columns:
-            adata.obs[col] = np.repeat(metadata_smpl[col].values, adata.n_obs)
+            new_dat_col = np.repeat(
+                metadata_smpl[col].values,
+                adata.n_obs
+            )
+            if adata.n_obs != len(new_dat_col):
+                warnings.warn(
+                    'Dropping {} column due to multiple values'.format(
+                        col
+                    )
+                )
+            else:
+                adata.obs[col] = new_dat_col
 
         # Ensure we have experiment_id in the final dataframe.
         if 'experiment_id' not in adata.obs.columns:
