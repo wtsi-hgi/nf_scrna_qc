@@ -4,7 +4,14 @@
   ```bash
   export NXF_SINGULARITY_CACHEDIR=$(realpath ./singularity_images)
   mkdir -p $NXF_SINGULARITY_CACHEDIR
-  singularity pull --dir ${NXF_SINGULARITY_CACHEDIR} docker://wtsihgi//nf_qc_cluster-2.4
+  singularity pull --dir ${NXF_SINGULARITY_CACHEDIR} docker://wtsihgi/nf_qc_cluster:2.4
   singularity pull --dir ${NXF_SINGULARITY_CACHEDIR} docker://wtsihgi/seurat_azimuth_pbmc:1.1
-
+  singularity pull --dir ${NXF_SINGULARITY_CACHEDIR} docker://wtsihgi/nf_qc_cluster:sccaf_1.5
   ```
+
+will create the .sif files in $NXF_SINGULARITY_CACHEDIR dir:
+```
+nf_qc_cluster_2.4.sif
+seurat_azimuth_pbmc_1.1.sif
+nf_qc_cluster_sccaf_1.5.sif
+```
