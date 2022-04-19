@@ -16,4 +16,4 @@ seurat_azimuth_pbmc_1.1.sif
 nf_qc_cluster_sccaf_1.5.sif
 ```
 
-Copy these images in Nextflow singularity cache dir, defined in configuration fines as singularity.cacheDir .
+Copy these images in Nextflow singularity cache dir, defined in configuration fines as singularity.cacheDir, and renames files to change extension from .sif to .img 
