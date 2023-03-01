@@ -24,4 +24,4 @@ dependencies:
   - pip
   - pip:
     - cellex>=1.2.1
-    - scanpy>=1.8
+    - scanpy>=1.9
